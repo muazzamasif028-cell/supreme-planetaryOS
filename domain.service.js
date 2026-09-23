@@ -6,6 +6,7 @@ const Domain = require('./Domain');
 const AppError = require('./AppError');
 const whoisService = require('./whois.service');
 const aiGenerator = require('./ai-generator.service');
+const pricingService = require('./pricing.service');
 const cloudflareProvider = require('./cloudflare.provider');
 const { COUNTRY_TLDS, GENERIC_TLDS } = require('./country-tlds');
 
@@ -40,28 +41,41 @@ class DomainService {
             try {
                 const fullDomain = `${domainName}.${tld}`;
                 
-                // Check WHOIS first (fast)
+                // RDAP/WHOIS is the primary availability source for search.
+                // Registrar/provider APIs are intentionally not used here.
                 const whoisResult = await whoisService.lookup(fullDomain);
-                
-                // Verify with registrar API
-                const availability = await this.checkAvailability(domainName, tld);
-                
-                const isPremium = this.premiumTLDs.includes(tld);
-                const estimatedPrice = this.getEstimatedPrice(tld, isPremium);
-                
+
+                const normalizedTld = tld.toLowerCase();
+                const isPremium = this.premiumTLDs.includes(normalizedTld);
+                const registerPrice = pricingService.getBasePrice(normalizedTld, "register");
+                const renewalPrice = pricingService.getBasePrice(normalizedTld, "renew");
+                const transferPrice = pricingService.getBasePrice(normalizedTld, "transfer");
+
+                const available = whoisResult?.available ?? null;
+
+                const availabilityStatus =
+                    available === true
+                        ? "available"
+                        : available === false
+                            ? "registered"
+                            : "unknown";
+
                 results.push({
                     domain: fullDomain,
-                    tld,
-                    available: availability.available,
-                    premium: isPremium || availability.premium,
-                    price: availability.price || estimatedPrice,
-                    currency: 'USD',
-                    renewalPrice: estimatedPrice,
-                    transferPrice: estimatedPrice * 0.9,
-                    whoisInfo: whoisResult?.available ? null : {
-                        registrar: whoisResult?.registrar,
-                        creationDate: whoisResult?.creationDate,
-                        expiryDate: whoisResult?.expiryDate
+                    tld: normalizedTld,
+                    available,
+                    availability: availabilityStatus,
+                    premium: isPremium,
+                    price: registerPrice,
+                    currency: pricingService.currency,
+                    renewalPrice,
+                    transferPrice,
+                    whoisInfo: {
+                        registrar: whoisResult?.registrar || null,
+                        creationDate: whoisResult?.creationDate || null,
+                        expiryDate: whoisResult?.expiryDate || null,
+                        status: whoisResult?.status || null,
+                        source: whoisResult?.source || null
                     }
                 });
                 
@@ -69,7 +83,20 @@ class DomainService {
                 results.push({
                     domain: `${domainName}.${tld}`,
                     tld,
-                    available: false,
+                    available: null,
+                    availability: "unknown",
+                    premium: false,
+                    price: null,
+                    currency: "USD",
+                    renewalPrice: null,
+                    transferPrice: null,
+                    whoisInfo: {
+                        registrar: null,
+                        creationDate: null,
+                        expiryDate: null,
+                        status: "LOOKUP_FAILED",
+                        source: null
+                    },
                     error: error.message
                 });
             }
