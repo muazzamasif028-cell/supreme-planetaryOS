@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { createLogger, format, transports } = require('winston');
-const AppError = require('../utils/AppError');
+const AppError = require('./AppError');
 
 // =============================================
 // 📊 CONFIGURATION

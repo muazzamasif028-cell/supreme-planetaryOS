@@ -163,6 +163,59 @@ function macd(
   };
 }
 
+
+function atr(candles, period = 14) {
+  if (!Array.isArray(candles)) {
+    throw new TypeError('candles must be an array');
+  }
+
+  if (!Number.isInteger(period) || period <= 0) {
+    throw new Error('period must be a positive integer');
+  }
+
+  if (candles.length < period + 1) {
+    return null;
+  }
+
+  const trueRanges = [];
+
+  for (let i = 1; i < candles.length; i += 1) {
+    const high = Number(candles[i].high);
+    const low = Number(candles[i].low);
+    const previousClose = Number(candles[i - 1].close);
+
+    if (
+      !Number.isFinite(high) ||
+      !Number.isFinite(low) ||
+      !Number.isFinite(previousClose)
+    ) {
+      throw new Error('Invalid candle values for ATR');
+    }
+
+    trueRanges.push(
+      Math.max(
+        high - low,
+        Math.abs(high - previousClose),
+        Math.abs(low - previousClose)
+      )
+    );
+  }
+
+  let current =
+    trueRanges
+      .slice(0, period)
+      .reduce((sum, value) => sum + value, 0) /
+    period;
+
+  for (let i = period; i < trueRanges.length; i += 1) {
+    current =
+      ((current * (period - 1)) + trueRanges[i]) /
+      period;
+  }
+
+  return current;
+}
+
 function volatility(candles, period = 20) {
   if (!Array.isArray(candles)) {
     throw new TypeError('candles must be an array');
@@ -204,6 +257,45 @@ function volatility(candles, period = 20) {
   return Math.sqrt(variance);
 }
 
+
+function momentum(values, period = 10) {
+  const numbers = toNumbers(values);
+
+  if (!Number.isInteger(period) || period <= 0) {
+    throw new Error('period must be a positive integer');
+  }
+
+  if (numbers.length <= period) {
+    return null;
+  }
+
+  const current = numbers[numbers.length - 1];
+  const previous = numbers[numbers.length - 1 - period];
+
+  return current - previous;
+}
+
+function roc(values, period = 10) {
+  const numbers = toNumbers(values);
+
+  if (!Number.isInteger(period) || period <= 0) {
+    throw new Error('period must be a positive integer');
+  }
+
+  if (numbers.length <= period) {
+    return null;
+  }
+
+  const current = numbers[numbers.length - 1];
+  const previous = numbers[numbers.length - 1 - period];
+
+  if (previous === 0) {
+    return null;
+  }
+
+  return ((current - previous) / previous) * 100;
+}
+
 function volumeRatio(candles, period = 20) {
   if (!Array.isArray(candles)) {
     throw new TypeError('candles must be an array');
@@ -239,6 +331,143 @@ function volumeRatio(candles, period = 20) {
   return currentVolume / averageVolume;
 }
 
+
+function adx(candles, period = 14) {
+  if (!Array.isArray(candles)) {
+    throw new TypeError('candles must be an array');
+  }
+
+  if (!Number.isInteger(period) || period <= 0) {
+    throw new Error('period must be a positive integer');
+  }
+
+  if (candles.length < (period * 2) + 1) {
+    return null;
+  }
+
+  const trueRanges = [];
+  const plusDirectionalMovement = [];
+  const minusDirectionalMovement = [];
+
+  for (let i = 1; i < candles.length; i += 1) {
+    const high = Number(candles[i].high);
+    const low = Number(candles[i].low);
+    const previousHigh = Number(candles[i - 1].high);
+    const previousLow = Number(candles[i - 1].low);
+    const previousClose = Number(candles[i - 1].close);
+
+    if (
+      !Number.isFinite(high) ||
+      !Number.isFinite(low) ||
+      !Number.isFinite(previousHigh) ||
+      !Number.isFinite(previousLow) ||
+      !Number.isFinite(previousClose)
+    ) {
+      throw new Error('Invalid candle values for ADX');
+    }
+
+    const trueRange = Math.max(
+      high - low,
+      Math.abs(high - previousClose),
+      Math.abs(low - previousClose)
+    );
+
+    const upMove = high - previousHigh;
+    const downMove = previousLow - low;
+
+    const plusDm =
+      upMove > downMove && upMove > 0
+        ? upMove
+        : 0;
+
+    const minusDm =
+      downMove > upMove && downMove > 0
+        ? downMove
+        : 0;
+
+    trueRanges.push(trueRange);
+    plusDirectionalMovement.push(plusDm);
+    minusDirectionalMovement.push(minusDm);
+  }
+
+  if (trueRanges.length < period * 2) {
+    return null;
+  }
+
+  let smoothedTrueRange =
+    trueRanges
+      .slice(0, period)
+      .reduce((sum, value) => sum + value, 0);
+
+  let smoothedPlusDm =
+    plusDirectionalMovement
+      .slice(0, period)
+      .reduce((sum, value) => sum + value, 0);
+
+  let smoothedMinusDm =
+    minusDirectionalMovement
+      .slice(0, period)
+      .reduce((sum, value) => sum + value, 0);
+
+  const dxValues = [];
+
+  for (let i = period; i < trueRanges.length; i += 1) {
+    smoothedTrueRange =
+      smoothedTrueRange -
+      (smoothedTrueRange / period) +
+      trueRanges[i];
+
+    smoothedPlusDm =
+      smoothedPlusDm -
+      (smoothedPlusDm / period) +
+      plusDirectionalMovement[i];
+
+    smoothedMinusDm =
+      smoothedMinusDm -
+      (smoothedMinusDm / period) +
+      minusDirectionalMovement[i];
+
+    if (smoothedTrueRange <= 0) {
+      continue;
+    }
+
+    const plusDi =
+      (smoothedPlusDm / smoothedTrueRange) * 100;
+
+    const minusDi =
+      (smoothedMinusDm / smoothedTrueRange) * 100;
+
+    const denominator = plusDi + minusDi;
+
+    if (denominator === 0) {
+      dxValues.push(0);
+      continue;
+    }
+
+    dxValues.push(
+      (Math.abs(plusDi - minusDi) / denominator) * 100
+    );
+  }
+
+  if (dxValues.length < period) {
+    return null;
+  }
+
+  let adxValue =
+    dxValues
+      .slice(0, period)
+      .reduce((sum, value) => sum + value, 0) /
+    period;
+
+  for (let i = period; i < dxValues.length; i += 1) {
+    adxValue =
+      ((adxValue * (period - 1)) + dxValues[i]) /
+      period;
+  }
+
+  return adxValue;
+}
+
 function calculateIndicators(candles) {
   if (!Array.isArray(candles) || candles.length === 0) {
     throw new Error('candles must be a non-empty array');
@@ -253,8 +482,12 @@ function calculateIndicators(candles) {
     ema21: ema(closes, 21),
     rsi14: rsi(closes, 14),
     macd: macd(closes),
+    atr14: atr(candles, 14),
     volatility20: volatility(candles, 20),
-    volumeRatio20: volumeRatio(candles, 20)
+    volumeRatio20: volumeRatio(candles, 20),
+    momentum10: momentum(closes, 10),
+    roc10: roc(closes, 10),
+    adx14: adx(candles, 14)
   };
 }
 
@@ -263,7 +496,11 @@ module.exports = {
   ema,
   rsi,
   macd,
+  atr,
   volatility,
   volumeRatio,
+  momentum,
+  roc,
+  adx,
   calculateIndicators
 };

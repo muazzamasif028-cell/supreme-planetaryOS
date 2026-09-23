@@ -21,6 +21,8 @@ const organizationRoutes =
 
 const memberRoutes =
     require('./organizations/members/member-routes');
+
+const domainRoutes = require('./domain.routes');
 const enterpriseAccess = require('./security/enterprise-access');
 const { authenticateToken, createToken } = require('./security/auth/jwt-auth');
 
@@ -43,6 +45,7 @@ const {
 const app = express();
 
 const neomRealtimeTelemetry = require('./neom-telemetry/NeomRealtimeTelemetry');
+const telemetryMetrics = require('./neom-telemetry/observability/TelemetryMetrics');
 const httpServer = http.createServer(app);
 const io = new SocketIOServer(httpServer, {
     cors: {
@@ -86,6 +89,11 @@ app.use(
 app.use(
     '/api/organization-members',
     memberRoutes
+);
+
+app.use(
+    '/api/domain',
+    domainRoutes
 );
 
 // ============================================
@@ -442,6 +450,19 @@ app.get(
 );
 
 // ============================================
+// ============================================
+// Prometheus Metrics
+// ============================================
+app.get("/metrics", async (req, res, next) => {
+    try {
+        const metrics = await telemetryMetrics.metrics();
+        res.set("Content-Type", telemetryMetrics.contentType());
+        return res.status(200).send(metrics);
+    } catch (error) {
+        return next(error);
+    }
+});
+
 // 404
 // ============================================
 

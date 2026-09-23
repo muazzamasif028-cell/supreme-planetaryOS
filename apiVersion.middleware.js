@@ -2,7 +2,7 @@
 // 📌 middleware/apiVersion.middleware.js
 // SUPREME API Versioning Middleware v11.0
 // ============================================================
-const AppError = require('../utils/AppError');
+const AppError = require('./AppError');
 
 // =============================================
 // 📊 VERSION CONFIGURATION

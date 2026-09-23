@@ -2,28 +2,26 @@
 // 🌐 services/domain.service.js
 // SUPREME Domain Service v11.0
 // ============================================================
-const Domain = require('../models/Domain');
-const AppError = require('../../utils/AppError');
+const Domain = require('./Domain');
+const AppError = require('./AppError');
 const whoisService = require('./whois.service');
-const dnsService = require('./dns.service');
-const sslService = require('./ssl.service');
 const aiGenerator = require('./ai-generator.service');
-const cloudflareProvider = require('../providers/cloudflare.provider');
-const namecheapProvider = require('../providers/namecheap.provider');
-const goDaddyProvider = require('../providers/goDaddy.provider');
+const cloudflareProvider = require('./cloudflare.provider');
+const { COUNTRY_TLDS, GENERIC_TLDS } = require('./country-tlds');
 
 class DomainService {
     constructor() {
         this.providers = {
             cloudflare: cloudflareProvider,
-            namecheap: namecheapProvider,
-            godaddy: goDaddyProvider
         };
         
+        // Complete TLD catalog:
+        // Country/territory TLDs + generic TLDs.
         this.supportedTLDs = [
-            'com', 'net', 'org', 'io', 'ai', 'cloud', 'app', 'dev',
-            'tech', 'online', 'store', 'site', 'xyz', 'co', 'me',
-            'info', 'biz', 'pro', 'media', 'agency', 'digital'
+            ...new Set([
+                ...COUNTRY_TLDS.flatMap(country => country.tlds),
+                ...GENERIC_TLDS
+            ])
         ];
         
         this.premiumTLDs = ['ai', 'io', 'cloud', 'app', 'dev', 'pro', 'media'];
@@ -32,10 +30,13 @@ class DomainService {
     /**
      * Search domain availability
      */
-    async searchDomain(domainName, tlds = ['com', 'net', 'org', 'io', 'ai', 'cloud']) {
+    async searchDomain(domainName, tlds = null) {
         const results = [];
+        const searchTLDs = Array.isArray(tlds) && tlds.length > 0
+            ? tlds
+            : this.supportedTLDs;
         
-        for (const tld of tlds) {
+        for (const tld of searchTLDs) {
             try {
                 const fullDomain = `${domainName}.${tld}`;
                 

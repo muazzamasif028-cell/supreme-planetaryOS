@@ -7,15 +7,13 @@ const axios = require('axios');
 class CloudflareProvider {
     constructor() {
         this.baseURL = 'https://api.cloudflare.com/client/v4';
-        this.apiKey = process.env.CLOUDFLARE_API_KEY;
-        this.email = process.env.CLOUDFLARE_EMAIL;
+        this.apiToken = process.env.CLOUDFLARE_API_TOKEN;
         this.accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
     }
 
     getHeaders() {
         return {
-            'X-Auth-Email': this.email,
-            'X-Auth-Key': this.apiKey,
+            Authorization: `Bearer ${this.apiToken}`,
             'Content-Type': 'application/json'
         };
     }

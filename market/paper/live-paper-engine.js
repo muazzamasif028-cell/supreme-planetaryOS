@@ -3,7 +3,13 @@ const {
   getTicker
 } = require('../data/market-data.service');
 
-const { generatePrediction } = require('../prediction/prediction-engine');
+const {
+  detectTradeSetup
+} = require('../strategy/trade-setup');
+
+const {
+  calculateIndicators
+} = require('../indicators/technical-indicators');
 
 const SYMBOL = 'XAU/USD';
 const INTERVAL = '5min';
@@ -12,13 +18,14 @@ class LivePaperEngine {
   constructor({
     pollMs = 30000,
     maxHistory = 100,
-    stopLossPercent = 0.01,
-    takeProfitPercent = 0.02
+    atrStopMultiplier = 2,
+    atrTakeProfitMultiplier = 3
   } = {}) {
     this.pollMs = pollMs;
     this.maxHistory = maxHistory;
-    this.stopLossPercent = stopLossPercent;
-    this.takeProfitPercent = takeProfitPercent;
+    this.atrStopMultiplier = atrStopMultiplier;
+    this.atrTakeProfitMultiplier =
+      atrTakeProfitMultiplier;
 
     this.timer = null;
     this.lastCandleTime = null;
@@ -26,6 +33,8 @@ class LivePaperEngine {
     this.position = null;
 
     this.trades = [];
+    this.transactions = [];
+
     this.stats = {
       totalTrades: 0,
       wins: 0,
@@ -34,32 +43,105 @@ class LivePaperEngine {
     };
   }
 
-  calculateLevels(signal, entryPrice) {
+  calculateLevels(signal, entryPrice, atr) {
+    if (
+      !Number.isFinite(entryPrice) ||
+      !Number.isFinite(atr) ||
+      entryPrice <= 0 ||
+      atr <= 0
+    ) {
+      throw new Error('Invalid entry price or ATR');
+    }
+
+    const stopDistance =
+      atr * this.atrStopMultiplier;
+
+    const targetDistance =
+      atr * this.atrTakeProfitMultiplier;
+
     if (signal === 'BUY') {
       return {
-        stopLoss: entryPrice * (1 - this.stopLossPercent),
-        takeProfit: entryPrice * (1 + this.takeProfitPercent)
+        stopLoss: entryPrice - stopDistance,
+        takeProfit: entryPrice + targetDistance
       };
     }
 
     if (signal === 'SELL') {
       return {
-        stopLoss: entryPrice * (1 + this.stopLossPercent),
-        takeProfit: entryPrice * (1 - this.takeProfitPercent)
+        stopLoss: entryPrice + stopDistance,
+        takeProfit: entryPrice - targetDistance
       };
     }
 
     throw new Error(`Unsupported signal: ${signal}`);
   }
 
-  calculatePnl(signal, entryPrice, exitPrice) {
+  calculatePnl(
+    signal,
+    entryPrice,
+    exitPrice
+  ) {
     return signal === 'BUY'
       ? exitPrice - entryPrice
       : entryPrice - exitPrice;
   }
 
-  openPosition(signal, entryPrice, candleTime, prediction) {
-    const levels = this.calculateLevels(signal, entryPrice);
+  calculateUnrealizedPnl(price) {
+    if (!this.position) {
+      return 0;
+    }
+
+    return this.calculatePnl(
+      this.position.signal,
+      this.position.entryPrice,
+      price
+    );
+  }
+
+  calculateUnrealizedPnlPercent(price) {
+    if (!this.position) {
+      return 0;
+    }
+
+    const pnl =
+      this.calculateUnrealizedPnl(price);
+
+    return (
+      pnl /
+      this.position.entryPrice
+    ) * 100;
+  }
+
+  recordTransaction(type, payload = {}) {
+    const transaction = {
+      transactionId:
+        this.transactions.length + 1,
+      type,
+      timestamp:
+        new Date().toISOString(),
+      symbol: SYMBOL,
+      ...payload
+    };
+
+    this.transactions.push(transaction);
+
+    return transaction;
+  }
+
+  openPosition(
+    signal,
+    entryPrice,
+    candleTime,
+    prediction,
+    atr,
+    setup
+  ) {
+    const levels =
+      this.calculateLevels(
+        signal,
+        entryPrice,
+        atr
+      );
 
     this.position = {
       symbol: SYMBOL,
@@ -68,24 +150,66 @@ class LivePaperEngine {
       entryPrice,
       stopLoss: levels.stopLoss,
       takeProfit: levels.takeProfit,
+      atr,
+      atrStopMultiplier:
+        this.atrStopMultiplier,
+      atrTakeProfitMultiplier:
+        this.atrTakeProfitMultiplier,
       entryTime: candleTime,
-      predictionScore: prediction.score,
-      predictionConfidence: prediction.confidence
+
+      predictionScore:
+        prediction?.score ?? null,
+
+      predictionConfidence:
+        prediction?.confidence ?? null,
+
+      setupReason:
+        setup?.reason ?? null,
+
+      priceActionPatterns:
+        setup?.priceAction?.patterns ?? [],
+
+      support:
+        setup?.support?.price ?? null,
+
+      resistance:
+        setup?.resistance?.price ?? null
     };
+
+    this.recordTransaction(
+      'OPEN',
+      {
+        signal,
+        entryPrice,
+        stopLoss: levels.stopLoss,
+        takeProfit: levels.takeProfit,
+        atr,
+        entryTime: candleTime,
+        setupReason:
+          setup?.reason ?? null,
+        priceActionPatterns:
+          setup?.priceAction?.patterns ?? []
+      }
+    );
 
     return this.position;
   }
 
-  closePosition(exitPrice, exitReason, exitTime) {
+  closePosition(
+    exitPrice,
+    exitReason,
+    exitTime
+  ) {
     if (!this.position) {
       return null;
     }
 
-    const pnl = this.calculatePnl(
-      this.position.signal,
-      this.position.entryPrice,
-      exitPrice
-    );
+    const pnl =
+      this.calculatePnl(
+        this.position.signal,
+        this.position.entryPrice,
+        exitPrice
+      );
 
     const trade = {
       ...this.position,
@@ -93,8 +217,13 @@ class LivePaperEngine {
       exitReason,
       exitTime,
       pnl,
-      pnlPercent: (pnl / this.position.entryPrice) * 100,
-      result: pnl > 0 ? 'WIN' : 'LOSS'
+      pnlPercent:
+        (
+          pnl /
+          this.position.entryPrice
+        ) * 100,
+      result:
+        pnl > 0 ? 'WIN' : 'LOSS'
     };
 
     this.trades.push(trade);
@@ -109,96 +238,152 @@ class LivePaperEngine {
 
     this.stats.netPnl += pnl;
 
+    this.recordTransaction(
+      'CLOSE',
+      {
+        signal: trade.signal,
+        entryPrice: trade.entryPrice,
+        exitPrice,
+        exitReason,
+        pnl,
+        pnlPercent: trade.pnlPercent,
+        result: trade.result,
+        entryTime: trade.entryTime,
+        exitTime
+      }
+    );
+
     this.position = null;
 
     return trade;
   }
 
-  evaluateCandle(candle) {
+  evaluatePrice(
+    price,
+    timestamp
+  ) {
     if (!this.position) {
       return null;
     }
 
+    const {
+      signal,
+      stopLoss,
+      takeProfit
+    } = this.position;
+
     if (
-      !candle ||
-      !Number.isFinite(Number(candle.high)) ||
-      !Number.isFinite(Number(candle.low))
+      signal === 'BUY' &&
+      price <= stopLoss
     ) {
-      throw new Error('Invalid candle OHLC data');
+      return this.closePosition(
+        stopLoss,
+        'STOP_LOSS',
+        timestamp
+      );
     }
 
-    const { signal, stopLoss, takeProfit } = this.position;
-    const timestamp =
-      candle.openTime || new Date().toISOString();
-
-    if (signal === 'BUY') {
-      // Conservative rule: if both SL and TP are touched,
-      // count STOP_LOSS first because candle order is unknown.
-      if (candle.low <= stopLoss) {
-        return this.closePosition(
-          stopLoss,
-          'STOP_LOSS',
-          timestamp
-        );
-      }
-
-      if (candle.high >= takeProfit) {
-        return this.closePosition(
-          takeProfit,
-          'TAKE_PROFIT',
-          timestamp
-        );
-      }
+    if (
+      signal === 'BUY' &&
+      price >= takeProfit
+    ) {
+      return this.closePosition(
+        takeProfit,
+        'TAKE_PROFIT',
+        timestamp
+      );
     }
 
-    if (signal === 'SELL') {
-      if (candle.high >= stopLoss) {
-        return this.closePosition(
-          stopLoss,
-          'STOP_LOSS',
-          timestamp
-        );
-      }
+    if (
+      signal === 'SELL' &&
+      price >= stopLoss
+    ) {
+      return this.closePosition(
+        stopLoss,
+        'STOP_LOSS',
+        timestamp
+      );
+    }
 
-      if (candle.low <= takeProfit) {
-        return this.closePosition(
-          takeProfit,
-          'TAKE_PROFIT',
-          timestamp
-        );
-      }
+    if (
+      signal === 'SELL' &&
+      price <= takeProfit
+    ) {
+      return this.closePosition(
+        takeProfit,
+        'TAKE_PROFIT',
+        timestamp
+      );
     }
 
     return null;
   }
 
   async monitorPrice() {
-    const ticker = await getTicker(SYMBOL);
+    const ticker =
+      await getTicker(SYMBOL);
 
-    if (!ticker || !Number.isFinite(Number(ticker.price))) {
-      throw new Error('Invalid XAU/USD ticker price');
+    if (
+      !ticker ||
+      !Number.isFinite(
+        Number(ticker.price)
+      )
+    ) {
+      throw new Error(
+        'Invalid XAU/USD ticker price'
+      );
     }
 
-    const price = Number(ticker.price);
-    const timestamp = new Date().toISOString();
+    const price =
+      Number(ticker.price);
 
-    const closedTrade = this.evaluateLivePrice(
-      price,
-      timestamp
-    );
+    const timestamp =
+      new Date().toISOString();
+
+    const closedTrade =
+      this.evaluatePrice(
+        price,
+        timestamp
+      );
+
+    const unrealizedPnl =
+      this.calculateUnrealizedPnl(
+        price
+      );
+
+    const unrealizedPnlPercent =
+      this.calculateUnrealizedPnlPercent(
+        price
+      );
 
     return {
       symbol: SYMBOL,
       price,
       timestamp,
+
       status: closedTrade
         ? 'TRADE_CLOSED'
         : this.position
           ? 'POSITION_OPEN'
           : 'NO_POSITION',
+
+      transaction:
+        closedTrade
+          ? this.transactions[
+              this.transactions.length - 1
+            ]
+          : null,
+
       trade: closedTrade,
+
       position: this.position,
-      stats: { ...this.stats }
+
+      unrealizedPnl,
+      unrealizedPnlPercent,
+
+      stats: {
+        ...this.stats
+      }
     };
   }
 
@@ -209,86 +394,148 @@ class LivePaperEngine {
       limit: this.maxHistory
     });
 
+    if (!Array.isArray(candles) || candles.length < 60) {
+      throw new Error(
+        'At least 60 XAU/USD candles are required'
+      );
+    }
+
     const latest = candles[candles.length - 1];
 
     if (!latest) {
       throw new Error('No XAU/USD candle received');
     }
 
-    // Ignore repeated polling of the same candle.
+    // Live ticker: manage open position and calculate
+    // real-time unrealized P&L.
+    const tickerResult = await this.monitorPrice();
+
+    // Do not generate another signal on the same
+    // 5-minute candle.
     if (latest.openTime === this.lastCandleTime) {
       return {
-        status: 'NO_NEW_CANDLE',
-        symbol: SYMBOL,
+        ...tickerResult,
+        status:
+          tickerResult.status === 'TRADE_CLOSED'
+            ? 'TRADE_CLOSED'
+            : this.position
+              ? 'POSITION_OPEN'
+              : 'NO_NEW_CANDLE',
         interval: INTERVAL,
-        candleTime: latest.openTime,
-        price: latest.close,
-        position: this.position,
-        stats: { ...this.stats }
+        candleTime: latest.openTime
       };
     }
 
-    // A new candle has arrived.
     this.lastCandleTime = latest.openTime;
 
-    // First manage an existing position using candle OHLC.
+    // Never open a second position while one is active.
     if (this.position) {
-      const closedTrade = this.evaluateCandle(latest);
-
-      if (closedTrade) {
-        return {
-          status: 'TRADE_CLOSED',
-          symbol: SYMBOL,
-          interval: INTERVAL,
-          candleTime: latest.openTime,
-          price: latest.close,
-          trade: closedTrade,
-          stats: { ...this.stats }
-        };
-      }
-
       return {
-        status: 'POSITION_OPEN',
-        symbol: SYMBOL,
+        ...tickerResult,
+        status:
+          tickerResult.status === 'TRADE_CLOSED'
+            ? 'TRADE_CLOSED'
+            : 'POSITION_OPEN',
         interval: INTERVAL,
-        candleTime: latest.openTime,
-        price: latest.close,
-        position: this.position,
-        stats: { ...this.stats }
+        candleTime: latest.openTime
       };
     }
 
-    // Only generate a new prediction when no position is active.
-    const prediction = generatePrediction(candles);
+    // The latest candle may still be forming.
+    // Use ONLY the previous completed candle for signals.
+    const completedCandles = candles.slice(0, -1);
 
-    if (!['BUY', 'SELL'].includes(prediction.signal)) {
+    if (completedCandles.length < 60) {
       return {
+        ...tickerResult,
         status: 'NO_SIGNAL',
-        symbol: SYMBOL,
         interval: INTERVAL,
         candleTime: latest.openTime,
-        price: latest.close,
-        prediction,
-        stats: { ...this.stats }
+        reason: 'Insufficient completed candle history'
       };
+    }
+
+    const completedCandle =
+      completedCandles[completedCandles.length - 1];
+
+    const setup = detectTradeSetup(
+      completedCandles,
+      {
+        symbol: SYMBOL
+      }
+    );
+
+    if (!['BUY', 'SELL'].includes(setup.signal)) {
+      return {
+        ...tickerResult,
+        status: 'NO_SIGNAL',
+        interval: INTERVAL,
+        candleTime: latest.openTime,
+        signalCandleTime: completedCandle.openTime,
+        price: tickerResult.price,
+        setupReason: setup.reason,
+        priceActionPatterns:
+          setup.priceAction.patterns,
+        setup
+      };
+    }
+
+    const indicators =
+      calculateIndicators(completedCandles);
+
+    const atr14 = indicators.atr14;
+
+    if (
+      !Number.isFinite(atr14) ||
+      atr14 <= 0
+    ) {
+      return {
+        ...tickerResult,
+        status: 'NO_SIGNAL',
+        interval: INTERVAL,
+        candleTime: latest.openTime,
+        signalCandleTime: completedCandle.openTime,
+        price: tickerResult.price,
+        reason: 'ATR unavailable'
+      };
+    }
+
+    // Execute PAPER entry using the current live ticker price.
+    const liveEntryPrice = Number(tickerResult.price);
+
+    if (
+      !Number.isFinite(liveEntryPrice) ||
+      liveEntryPrice <= 0
+    ) {
+      throw new Error(
+        'Invalid live XAU/USD entry price'
+      );
     }
 
     const position = this.openPosition(
-      prediction.signal,
-      latest.close,
-      latest.openTime,
-      prediction
+      setup.signal,
+      liveEntryPrice,
+      new Date().toISOString(),
+      null,
+      atr14,
+      setup
     );
 
     return {
+      ...tickerResult,
       status: 'POSITION_OPENED',
-      symbol: SYMBOL,
       interval: INTERVAL,
       candleTime: latest.openTime,
-      price: latest.close,
-      prediction,
+      signalCandleTime: completedCandle.openTime,
+      signal: setup.signal,
+      setupReason: setup.reason,
+      priceActionPatterns:
+        setup.priceAction.patterns,
+      price: liveEntryPrice,
       position,
-      stats: { ...this.stats }
+      stats: {
+        ...this.stats
+      }
     };
   }
 
@@ -298,17 +545,150 @@ class LivePaperEngine {
     }
 
     console.log(
-      `[LIVE PAPER] Starting ${SYMBOL} ${INTERVAL} monitor...`
+      '======================================'
     );
+    console.log(
+      ' LIVE XAU/USD PAPER SESSION'
+    );
+    console.log(
+      '======================================'
+    );
+    console.log(
+      `Maximum closed trades: 10`
+    );
+    console.log(
+      `Polling interval: ${this.pollMs} ms`
+    );
+    console.log(
+      'Real-money execution: DISABLED'
+    );
+    console.log(
+      `ATR stop: ${this.atrStopMultiplier}x`
+    );
+    console.log(
+      `ATR target: ${this.atrTakeProfitMultiplier}x`
+    );
+    console.log('');
 
     const runTick = async () => {
-      try {
-        const result = await this.tick();
+      if (
+        this.stats.totalTrades >= 10
+      ) {
+        console.log(
+          '\n=== 10 CLOSED TRADES REACHED ==='
+        );
+        console.table([
+          {
+            trades:
+              this.stats.totalTrades,
+            wins:
+              this.stats.wins,
+            losses:
+              this.stats.losses,
+            netPnl:
+              this.stats.netPnl
+          }
+        ]);
 
-        console.dir(result, { depth: null });
+        this.stop();
+        return;
+      }
+
+      try {
+        const result =
+          await this.tick();
+
+        console.log('\n--- CYCLE ---');
+        console.log(
+          'Status:',
+          result.status
+        );
+        console.log(
+          'Time:',
+          result.timestamp ??
+          result.candleTime
+        );
+        console.log(
+          'Price:',
+          result.price
+        );
+
+        if (result.signal) {
+          console.log(
+            'Signal:',
+            result.signal
+          );
+        }
+
+        if (result.setupReason) {
+          console.log(
+            'Reason:',
+            result.setupReason
+          );
+        }
+
+        if (
+          result.priceActionPatterns
+            ?.length
+        ) {
+          console.log(
+            'Price Action:',
+            result.priceActionPatterns.join(
+              ', '
+            )
+          );
+        }
+
+        if (result.position) {
+          console.log(
+            'Position:',
+            result.position.signal,
+            '| Entry:',
+            result.position.entryPrice,
+            '| SL:',
+            result.position.stopLoss,
+            '| TP:',
+            result.position.takeProfit
+          );
+        }
+
+        if (
+          Number.isFinite(
+            result.unrealizedPnl
+          )
+        ) {
+          console.log(
+            'Unrealized P&L:',
+            result.unrealizedPnl
+          );
+        }
+
+        if (result.trade) {
+          console.log(
+            'CLOSED:',
+            result.trade.result,
+            '| Reason:',
+            result.trade.exitReason,
+            '| Realized P&L:',
+            result.trade.pnl
+          );
+        }
+
+        console.log(
+          'Daily trades:',
+          result.stats.totalTrades,
+          '| Wins:',
+          result.stats.wins,
+          '| Losses:',
+          result.stats.losses,
+          '| Realized P&L:',
+          result.stats.netPnl
+        );
+
       } catch (error) {
         console.error(
           '[LIVE PAPER ERROR]',
+          error.stack ||
           error.message
         );
       }
@@ -316,10 +696,11 @@ class LivePaperEngine {
 
     runTick();
 
-    this.timer = setInterval(
-      runTick,
-      this.pollMs
-    );
+    this.timer =
+      setInterval(
+        runTick,
+        this.pollMs
+      );
   }
 
   stop() {
@@ -331,7 +712,7 @@ class LivePaperEngine {
     this.timer = null;
 
     console.log(
-      '[LIVE PAPER] Monitor stopped.'
+      '\n[LIVE PAPER] Monitor stopped.'
     );
   }
 
@@ -341,7 +722,12 @@ class LivePaperEngine {
       interval: INTERVAL,
       position: this.position,
       trades: [...this.trades],
-      stats: { ...this.stats }
+      transactions: [
+        ...this.transactions
+      ],
+      stats: {
+        ...this.stats
+      }
     };
   }
 }

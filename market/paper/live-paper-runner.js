@@ -11,15 +11,17 @@ async function runSession() {
   const engine = new LivePaperEngine({
     pollMs: POLL_MS,
     maxHistory: 100,
-    stopLossPercent: 0.01,
-    takeProfitPercent: 0.02
+    atrStopMultiplier: 2,
+    atrTakeProfitMultiplier: 3
   });
 
   console.log('======================================');
-  console.log(' LIVE XAU/USD PAPER SESSION');
+  console.log(' REAL-TIME XAU/USD PAPER SESSION');
   console.log('======================================');
   console.log(`Maximum closed trades: ${MAX_TRADES}`);
   console.log(`Polling interval: ${POLL_MS} ms`);
+  console.log('ATR Stop: 2x');
+  console.log('ATR Target: 3x');
   console.log('Real-money execution: DISABLED');
   console.log('');
 
@@ -28,20 +30,44 @@ async function runSession() {
   const runCycle = async () => {
     try {
       const result = await engine.tick();
+      const state = engine.getState();
 
-      console.log('\n--- CYCLE ---');
+      console.log('\n--- REAL-TIME CYCLE ---');
       console.log('Status:', result.status);
-      console.log('Time:', result.candleTime || result.timestamp);
-      console.log('Price:', result.price);
+      console.log(
+        'Time:',
+        result.timestamp ||
+        result.candleTime ||
+        'N/A'
+      );
+      console.log(
+        'Price:',
+        result.price
+      );
 
-      if (result.prediction) {
+      if (result.signal) {
         console.log(
-          'Prediction:',
-          result.prediction.signal,
-          '| Score:',
-          result.prediction.score,
-          '| Confidence:',
-          result.prediction.confidence
+          'Signal:',
+          result.signal
+        );
+      }
+
+      if (result.setupReason) {
+        console.log(
+          'Reason:',
+          result.setupReason
+        );
+      }
+
+      if (
+        Array.isArray(
+          result.priceActionPatterns
+        ) &&
+        result.priceActionPatterns.length
+      ) {
+        console.log(
+          'Price Action:',
+          result.priceActionPatterns.join(', ')
         );
       }
 
@@ -54,73 +80,156 @@ async function runSession() {
           '| SL:',
           result.position.stopLoss,
           '| TP:',
-          result.position.takeProfit
+          result.position.takeProfit,
+          '| ATR:',
+          result.position.atr
+        );
+      }
+
+      if (
+        Number.isFinite(
+          result.unrealizedPnl
+        )
+      ) {
+        console.log(
+          'Unrealized P&L:',
+          result.unrealizedPnl
+        );
+        console.log(
+          'Unrealized P&L %:',
+          result.unrealizedPnlPercent
         );
       }
 
       if (result.trade) {
         console.log(
           'TRADE CLOSED:',
-          result.trade.result,
-          '| Reason:',
-          result.trade.exitReason,
-          '| P&L:',
-          result.trade.pnl,
-          '| P&L %:',
+          result.trade.result
+        );
+        console.log(
+          'Exit reason:',
+          result.trade.exitReason
+        );
+        console.log(
+          'Entry:',
+          result.trade.entryPrice
+        );
+        console.log(
+          'Exit:',
+          result.trade.exitPrice
+        );
+        console.log(
+          'Realized P&L:',
+          result.trade.pnl
+        );
+        console.log(
+          'Realized P&L %:',
           result.trade.pnlPercent
         );
       }
 
-      const state = engine.getState();
+      if (result.transaction) {
+        console.log(
+          'TRANSACTION:',
+          result.transaction.transactionId,
+          '|',
+          result.transaction.type
+        );
+      }
 
       console.log(
-        'Daily trades:',
+        'Closed trades:',
         state.stats.totalTrades,
+        '/',
+        MAX_TRADES,
         '| Wins:',
         state.stats.wins,
         '| Losses:',
         state.stats.losses,
-        '| Net P&L:',
+        '| Realized P&L:',
         state.stats.netPnl
       );
 
-      if (state.stats.totalTrades >= MAX_TRADES) {
-        console.log('\n======================================');
-        console.log(' 10 CLOSED TRADES REACHED');
-        console.log(' SESSION STOPPED');
-        console.log('======================================');
+      if (
+        state.stats.totalTrades >= MAX_TRADES
+      ) {
+        console.log(
+          '\n======================================'
+        );
+        console.log(
+          ' 10 CLOSED PAPER TRADES REACHED'
+        );
+        console.log(
+          ' SESSION STOPPED'
+        );
+        console.log(
+          '======================================'
+        );
 
-        console.dir(state.stats, { depth: null });
+        console.table(
+          state.stats
+        );
 
         clearInterval(timer);
+        timer = null;
       }
+
     } catch (error) {
-      console.error('\n[LIVE SESSION ERROR]', error.message);
+      console.error(
+        '\n[LIVE SESSION ERROR]',
+        error.stack || error.message
+      );
     }
   };
 
   await runCycle();
 
-  if (engine.getState().stats.totalTrades >= MAX_TRADES) {
+  if (
+    engine.getState().stats.totalTrades >=
+    MAX_TRADES
+  ) {
     return;
   }
 
-  timer = setInterval(runCycle, POLL_MS);
+  timer = setInterval(
+    runCycle,
+    POLL_MS
+  );
 
   process.on('SIGINT', () => {
-    clearInterval(timer);
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
 
-    console.log('\n======================================');
-    console.log(' SESSION INTERRUPTED');
-    console.log('======================================');
+    console.log(
+      '\n======================================'
+    );
+    console.log(
+      ' SESSION INTERRUPTED'
+    );
+    console.log(
+      '======================================'
+    );
 
-    console.dir(engine.getState(), { depth: null });
+    console.log('\n=== FINAL STATS ===');
+    console.table(
+      engine.getState().stats
+    );
+
+    console.log('\n=== TRANSACTIONS ===');
+    console.table(
+      engine.getState().transactions
+    );
 
     process.exit(0);
   });
 }
 
 runSession().catch((error) => {
-  console.error('SESSION ERROR:', error.message);
+  console.error(
+    'SESSION ERROR:',
+    error.stack || error.message
+  );
   process.exitCode = 1;
 });

@@ -22,7 +22,12 @@ function generatePrediction(candles) {
     ema21,
     rsi14,
     macd,
-    volumeRatio20
+    atr14,
+    volatility20,
+    volumeRatio20,
+    momentum10,
+    roc10,
+    adx14
   } = indicators;
 
   if (
@@ -58,6 +63,22 @@ function generatePrediction(candles) {
     reasons.push('EMA9 is below EMA21');
   }
 
+  // ADX trend regime
+  let trendStrength = 'UNKNOWN';
+
+  if (Number.isFinite(adx14)) {
+    if (adx14 < 20) {
+      trendStrength = 'WEAK';
+      reasons.push('ADX indicates a weak or sideways market');
+    } else if (adx14 < 25) {
+      trendStrength = 'DEVELOPING';
+      reasons.push('ADX indicates a developing trend');
+    } else {
+      trendStrength = 'STRONG';
+      reasons.push('ADX indicates a strong trend');
+    }
+  }
+
   // SMA confirmation
   if (price > sma20) {
     score += 1;
@@ -68,12 +89,45 @@ function generatePrediction(candles) {
   }
 
   // MACD momentum
-  if (macd.histogram > 0) {
+  const macdEpsilon = Math.max(
+    Math.abs(price) * 0.000001,
+    0.000001
+  );
+
+  if (macd.histogram > macdEpsilon) {
     score += 2;
-    reasons.push('MACD histogram is positive');
-  } else {
+    reasons.push('MACD histogram is positively meaningful');
+  } else if (macd.histogram < -macdEpsilon) {
     score -= 2;
-    reasons.push('MACD histogram is negative');
+    reasons.push('MACD histogram is negatively meaningful');
+  } else {
+    reasons.push('MACD histogram is neutral');
+  }
+
+  // Momentum + ROC confirmation
+  if (
+    Number.isFinite(momentum10) &&
+    Number.isFinite(roc10)
+  ) {
+    if (momentum10 > 0 && roc10 > 0) {
+      score += 2;
+      reasons.push(
+        'Momentum and ROC confirm bullish direction'
+      );
+    } else if (momentum10 < 0 && roc10 < 0) {
+      score -= 2;
+      reasons.push(
+        'Momentum and ROC confirm bearish direction'
+      );
+    } else {
+      reasons.push(
+        'Momentum and ROC give mixed direction'
+      );
+    }
+  } else {
+    reasons.push(
+      'Momentum and ROC are unavailable'
+    );
   }
 
   // RSI
@@ -104,15 +158,61 @@ function generatePrediction(candles) {
     }
   }
 
-  let signal = 'HOLD';
+  const atrRatio =
+    Number.isFinite(atr14) && price > 0
+      ? atr14 / price
+      : null;
 
-  if (score >= 4) {
-    signal = 'BUY';
-  } else if (score <= -4) {
-    signal = 'SELL';
+  let volatilityState = 'UNKNOWN';
+
+  if (Number.isFinite(atrRatio)) {
+    if (atrRatio < 0.0005) {
+      volatilityState = 'LOW';
+      reasons.push('ATR indicates unusually low volatility');
+    } else {
+      volatilityState = 'NORMAL';
+      reasons.push('ATR indicates normal price movement');
+    }
   }
 
-  const maxScore = 9;
+  let signal = 'HOLD';
+
+  const bullishAlignment =
+    price > ema21 &&
+    ema9 > ema21 &&
+    momentum10 > 0 &&
+    roc10 > 0 &&
+    macd.histogram > macdEpsilon;
+
+  const bearishAlignment =
+    price < ema21 &&
+    ema9 < ema21 &&
+    momentum10 < 0 &&
+    roc10 < 0 &&
+    macd.histogram < -macdEpsilon;
+
+  if (trendStrength === 'WEAK') {
+    score = 0;
+    reasons.push(
+      'Signal suppressed because trend strength is weak'
+    );
+  } else if (bullishAlignment && score >= 4) {
+    signal = 'BUY';
+    reasons.push(
+      'Bullish indicators are directionally aligned'
+    );
+  } else if (bearishAlignment && score <= -4) {
+    signal = 'SELL';
+    reasons.push(
+      'Bearish indicators are directionally aligned'
+    );
+  } else if (score >= 4 || score <= -4) {
+    reasons.push(
+      'Signal held because directional indicators are mixed'
+    );
+  }
+
+  const maxScore = 11;
 
   const confidence = clamp(
     50 + (Math.abs(score) / maxScore) * 45,
@@ -126,6 +226,8 @@ function generatePrediction(candles) {
     confidence: Number(confidence.toFixed(2)),
     price,
     indicators,
+    trendStrength,
+    volatilityState,
     reasons,
     generatedAt: new Date().toISOString()
   };

@@ -4,7 +4,7 @@
 // ============================================================
 const jwt = require('jsonwebtoken');
 const UniversalIdentity = require('../models/UniversalIdentity');
-const AppError = require('../../../utils/AppError');
+const AppError = require('./AppError');
 
 class UniversalLoginService {
     constructor() {

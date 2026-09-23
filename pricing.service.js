@@ -2,7 +2,7 @@
 // 💰 services/pricing.service.js
 // SUPREME Enterprise Domain Pricing Service v14.0
 // ============================================================
-const pricingData = require('../data/pricing-tiers.json');
+const pricingData = require('./pricing-tiers.json');
 
 class PricingService {
     constructor() {

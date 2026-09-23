@@ -125,7 +125,7 @@ if (cluster.isMaster) {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: false,
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
             sameSite: 'strict'
@@ -158,6 +158,48 @@ if (cluster.isMaster) {
     }));
     
     // =============================================
+    // LIVENESS / READINESS
+    // =============================================
+
+    app.get('/api/health/live', (req, res) => {
+        res.status(200).json({
+            status: 'ALIVE',
+            pid: process.pid,
+            worker: WORKER_ID,
+            uptime: process.uptime(),
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    app.get('/api/health/ready', (req, res) => {
+        const databaseReady =
+            mongoose.connection.readyState === 1;
+
+        const redisReady =
+            Boolean(
+                redisClient &&
+                redisClient.isReady
+            );
+
+        const ready =
+            databaseReady ||
+            process.env.NODE_ENV !== 'production';
+
+        res.status(ready ? 200 : 503).json({
+            status: ready ? 'READY' : 'NOT_READY',
+            database:
+                databaseReady
+                    ? 'CONNECTED'
+                    : 'DISCONNECTED',
+            redis:
+                redisReady
+                    ? 'CONNECTED'
+                    : 'DISCONNECTED',
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    // =============================================
     // HEALTH CHECK
     // =============================================
     app.get('/api/health', async (req, res) => {
@@ -171,7 +213,11 @@ if (cluster.isMaster) {
             memory: process.memoryUsage(),
             cpu: process.cpuUsage(),
             database: mongoose.connection.readyState === 1 ? 'CONNECTED' : 'DISCONNECTED',
-            redis: redisClient.isReady ? 'CONNECTED' : 'DISCONNECTED',
+            redis:
+                redisClient &&
+                redisClient.isReady
+                    ? 'CONNECTED'
+                    : 'DISCONNECTED',
             timestamp: new Date().toISOString()
         };
         res.json(health);

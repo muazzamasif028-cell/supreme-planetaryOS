@@ -4,13 +4,13 @@
 // ============================================================
 const express = require('express');
 const router = express.Router();
-const domainController = require('../controllers/domain.controller');
-const dnsController = require('../controllers/dns.controller');
-const sslController = require('../controllers/ssl.controller');
-const emailController = require('../controllers/email.controller');
-const authMiddleware = require('../../middleware/auth.middleware');
-const rateLimiter = require('../../middleware/rateLimiter.middleware');
-const asyncHandler = require('../../middleware/asyncHandler');
+const domainController = require('./domain.controller');
+const dnsController = require('./dns.controller');
+const sslController = require('./ssl.controller');
+const emailController = require('./email.controller');
+const authMiddleware = require('./routes/auth.middleware.js — COMPLETE SECURITY LAYER');
+const rateLimiter = require('./rateLimiter.middleware');
+const asyncHandler = require('./asyncHandler');
 
 // All routes require authentication
 router.use(authMiddleware.authenticate());

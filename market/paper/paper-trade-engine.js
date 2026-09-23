@@ -16,7 +16,10 @@ function calculateLevels({
   signal,
   entryPrice,
   stopLossPercent = 0.01,
-  takeProfitPercent = 0.02
+  takeProfitPercent = 0.02,
+  atr = null,
+  atrStopMultiplier = 1.5,
+  atrTakeProfitMultiplier = 3
 }) {
   if (!['BUY', 'SELL'].includes(signal)) {
     throw new Error('signal must be BUY or SELL');
@@ -43,16 +46,48 @@ function calculateLevels({
     throw new Error('takeProfitPercent must be positive');
   }
 
+  const useAtr =
+    Number.isFinite(atr) &&
+    atr > 0;
+
+  if (useAtr) {
+    if (
+      !Number.isFinite(atrStopMultiplier) ||
+      atrStopMultiplier <= 0
+    ) {
+      throw new Error(
+        'atrStopMultiplier must be positive'
+      );
+    }
+
+    if (
+      !Number.isFinite(atrTakeProfitMultiplier) ||
+      atrTakeProfitMultiplier <= 0
+    ) {
+      throw new Error(
+        'atrTakeProfitMultiplier must be positive'
+      );
+    }
+  }
+
+  const stopDistance = useAtr
+    ? atr * atrStopMultiplier
+    : entryPrice * stopLossPercent;
+
+  const targetDistance = useAtr
+    ? atr * atrTakeProfitMultiplier
+    : entryPrice * takeProfitPercent;
+
   if (signal === 'BUY') {
     return {
-      stopLoss: entryPrice * (1 - stopLossPercent),
-      takeProfit: entryPrice * (1 + takeProfitPercent)
+      stopLoss: entryPrice - stopDistance,
+      takeProfit: entryPrice + targetDistance
     };
   }
 
   return {
-    stopLoss: entryPrice * (1 + stopLossPercent),
-    takeProfit: entryPrice * (1 - takeProfitPercent)
+    stopLoss: entryPrice + stopDistance,
+    takeProfit: entryPrice - targetDistance
   };
 }
 
@@ -61,7 +96,10 @@ function simulateTrade({
   signal,
   signalIndex,
   stopLossPercent = 0.01,
-  takeProfitPercent = 0.02
+  takeProfitPercent = 0.02,
+  atr = null,
+  atrStopMultiplier = 1.5,
+  atrTakeProfitMultiplier = 3
 }) {
   validateCandles(candles);
 
@@ -87,7 +125,10 @@ function simulateTrade({
     signal,
     entryPrice,
     stopLossPercent,
-    takeProfitPercent
+    takeProfitPercent,
+    atr,
+    atrStopMultiplier,
+    atrTakeProfitMultiplier
   });
 
   for (

@@ -2,9 +2,9 @@
 // 🛡️ middleware/rateLimiter.middleware.js
 // SUPREME Enterprise Rate Limiter v11.0
 // ============================================================
-const rateLimit = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const RedisStore = require('rate-limit-redis'); // Production ke liye
-const AppError = require('../utils/AppError');
+const AppError = require('./AppError');
 
 // =============================================
 // 📊 CONFIGURATION
@@ -41,7 +41,7 @@ const authLimiter = rateLimit({
     keyGenerator: (req) => {
         // Use IP + email combination for better tracking
         const email = req.body?.email || 'unknown';
-        return `${req.ip}_auth_${email}`;
+        return `${ipKeyGenerator(req.ip)}_auth_${email}`;
     },
     skip: (req) => {
         // Skip rate limiting for internal services
@@ -71,7 +71,7 @@ const apiLimiter = rateLimit({
     },
     keyGenerator: (req) => {
         // Use user ID if authenticated, otherwise IP
-        return req.user?.id || req.ip;
+        return req.user?.id || ipKeyGenerator(req.ip);
     },
     skip: (req) => {
         // Admin users get higher limits
@@ -100,7 +100,7 @@ const llmLimiter = rateLimit({
     keyGenerator: (req) => {
         // Track per user + per model
         const model = req.body?.model || 'default';
-        return `${req.user?.id || req.ip}_llm_${model}`;
+        return `${req.user?.id || ipKeyGenerator(req.ip)}_llm_${model}`;
     },
     skip: (req) => {
         // Premium users get higher limits
@@ -143,7 +143,7 @@ const paymentLimiter = rateLimit({
         }
     },
     keyGenerator: (req) => {
-        return `${req.user?.id || req.ip}_payment`;
+        return `${req.user?.id || ipKeyGenerator(req.ip)}_payment`;
     },
     ...(store && { store })
 });

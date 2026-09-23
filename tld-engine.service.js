@@ -22,7 +22,7 @@ class TLDEngine {
      */
     loadTLDs() {
         try {
-            const tldData = require('../data/tlds.json');
+            const tldData = require('./tlds.json');
             
             for (const [category, data] of Object.entries(tldData.categories)) {
                 this.categories.set(category, {
