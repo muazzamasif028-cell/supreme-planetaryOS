@@ -50,3 +50,7 @@ server-error.txt
 
 # Windows shortcuts
 *.lnk
+
+# Local environment variants
+.env*
+!.env.example
