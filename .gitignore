@@ -47,3 +47,6 @@ server-error.txt
 
 # Duplicate environment template
 .env.example — Updated
+
+# Windows shortcuts
+*.lnk
