@@ -8,6 +8,7 @@ const http = require('http');
 const { Server: SocketIOServer } = require('socket.io');
 
 require('dotenv').config();
+const db = require('./mongo.js — COMPLETE MONGODB SETUP');
 
 const registry = require('./integration/registry');
 const orchestrator = require('./integration/orchestrator');
@@ -369,6 +370,106 @@ app.post('/api/detect', (req, res, next) => {
 
 
 // ============================================
+// Full Diagnostic Pipeline
+// ============================================
+
+app.post('/api/diagnostics/full', async (req, res, next) => {
+    try {
+        const input = req.body?.input;
+
+        if (input === undefined || input === null) {
+            throw new TypeError('Diagnosis input is required');
+        }
+
+        const detector = registry.get('problem-detector');
+        const rootCause = registry.get('root-cause-engine');
+        const solution = registry.get('solution-engine');
+
+        if (!detector || !rootCause || !solution) {
+            return res.status(503).json({
+                error: 'DIAGNOSTIC_PIPELINE_UNAVAILABLE',
+                requiredModules: [
+                    'problem-detector',
+                    'root-cause-engine',
+                    'solution-engine'
+                ]
+            });
+        }
+
+        // ============================================
+        // STEP 1: PROBLEM DETECTION
+        // ============================================
+
+        const detected = detector.detect(input);
+
+        // ============================================
+        // STEP 2: ROOT CAUSE ANALYSIS
+        // ============================================
+
+        const normalizedInput =
+            typeof input === 'string'
+                ? input
+                : JSON.stringify(input);
+
+        const rcaInput =
+            detected.symptom &&
+            detected.symptom !== 'unknown'
+                ? [detected.symptom]
+                : normalizedInput;
+
+        const rca = await rootCause.analyze(rcaInput);
+
+        // ============================================
+        // STEP 3: SOLUTION GENERATION
+        // ============================================
+
+        let solutionResult = {
+            status: 'NOT_GENERATED',
+            reason: 'ROOT_CAUSE_UNRESOLVED'
+        };
+
+        if (
+            rca?.rootCause?.primary &&
+            rca.rootCause.primary !== 'UNKNOWN'
+        ) {
+            solutionResult = await solution.generateSolution(
+                rca.rootCause,
+                {
+                    autoApply: false
+                }
+            );
+        }
+
+        // ============================================
+        // FINAL RESPONSE
+        // ============================================
+
+        return res.status(200).json({
+            success: true,
+            pipeline: 'SUPREME_DIAGNOSTIC_V1',
+
+            input: normalizedInput,
+
+            detection: detected,
+
+            rootCause: rca,
+
+            solution: solutionResult,
+
+            safety: {
+                autoApply: false
+            },
+
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        return next(error);
+    }
+});
+
+
+// ============================================
 // NEOM Real-Time Telemetry
 // ============================================
 
@@ -490,11 +591,40 @@ app.use((err, req, res, next) => {
 // Start Server
 // ============================================
 
-function startServer() {
+async function startServer() {
 
     if (server) {
         return server;
     }
+
+    // ============================================
+    // DATABASE CONNECTION
+    // ============================================
+
+    const databaseRequired =
+        process.env.SUPREME_DB_REQUIRED === 'true';
+
+    try {
+        await db.connect();
+        console.log('✅ [SUPREME] Database connection ready');
+    } catch (error) {
+        console.error(
+            '⚠️ [SUPREME] Database unavailable:',
+            error.message
+        );
+
+        if (databaseRequired) {
+            throw error;
+        }
+
+        console.warn(
+            '⚠️ [SUPREME] Continuing in development mode without MongoDB'
+        );
+    }
+
+    // ============================================
+    // CORE RUNTIME
+    // ============================================
 
     orchestrator.start();
 

@@ -1,16 +1,49 @@
-﻿node_modules/
+# Secrets
 .env
 .env.*
 !.env.example
+!.env.example*
+
+# Dependencies / runtime
+node_modules/
+logs/
+*.log
+
+# Backups / temporary files
+*.backup
+*.before-*
+*.patch
+
+# Generated diagnostic/search artifacts
+all-repo-files.txt
+domain-check.txt
+domain-result.json
+search-result.txt
+.env\ complete.txt
+
+# Build / generated
 dist/
 build/
 coverage/
+
+# OS / editor
 .DS_Store
-*.log
-npm-debug.log*
-pnpm-debug.log*
-.turbo/
 .vscode/
 .idea/
+
+# TypeScript / package logs
 *.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+
+# Turbo
+.turbo/
+
+# Runtime
 server-error.txt
+
+# Development checkpoints
+*.sr-price-action-checkpoint
+
+# Duplicate environment template
+.env.example — Updated

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import NEOMCanvas from '../../neom/NEOMCanvas.jsx';
+import DomainSearch from './pages/DomainSearch.jsx';
 import '../../neom/NEOMCanvas.css';
 
 function EnterpriseHome() {
@@ -36,6 +37,10 @@ function EnterpriseHome() {
 
                         <Link to="/neom">
                             <button>ENTER NEOM COMMAND CENTER</button>
+                        </Link>
+
+                        <Link to="/domains">
+                            <button>DOMAIN SEARCH</button>
                         </Link>
                     </div>
 
@@ -76,6 +81,53 @@ function EnterpriseHome() {
                         <small>Critical incidents</small>
                     </article>
                 </section>
+
+                <section className="panels">
+                    <div className="panel">
+                        <div className="eyebrow">SYSTEM OPERATIONS</div>
+
+                        <h3>Operational Control</h3>
+
+                        <div className="row">
+                            <span>SUPREME CORE</span>
+                            <b>ONLINE</b>
+                        </div>
+
+                        <div className="row">
+                            <span>AI RUNTIME</span>
+                            <b>ACTIVE</b>
+                        </div>
+
+                        <div className="row">
+                            <span>SECURITY LAYER</span>
+                            <b>ACTIVE</b>
+                        </div>
+
+                        <div className="row">
+                            <span>TELEMETRY ENGINE</span>
+                            <b>LIVE</b>
+                        </div>
+
+                        <div className="row">
+                            <span>EVENT BUS</span>
+                            <b>READY</b>
+                        </div>
+                    </div>
+
+                    <div className="panel intelligence">
+                        <div className="eyebrow">SUPREME INTELLIGENCE</div>
+
+                        <div className="orb"></div>
+
+                        <h3>Planetary Intelligence</h3>
+
+                        <p>
+                            Unified intelligence layer for infrastructure,
+                            agents, security, telemetry and enterprise
+                            operations.
+                        </p>
+                    </div>
+                </section>
             </main>
         </div>
     );
@@ -86,6 +138,7 @@ export default function App() {
         <Routes>
             <Route path="/" element={<EnterpriseHome />} />
             <Route path="/neom" element={<NEOMCanvas />} />
+            <Route path="/domains" element={<DomainSearch />} />
         </Routes>
     );
 }

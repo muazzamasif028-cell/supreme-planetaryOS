@@ -58,6 +58,7 @@
     "redis-cli": "^2.1.2",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
+    "vercel": "^60.0.0",
     "weaviate-ts-client": "^2.2.0",
     "winston": "^3.19.0",
     "zustand": "^5.0.15"

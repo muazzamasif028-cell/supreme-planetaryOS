@@ -55,7 +55,7 @@ class RootCauseEngine {
             },
             DEPENDENCY_FAILURE: {
                 weight: 0.87,
-                subTypes: ['SERVICE_DOWN', 'API_TIMEOUT', 'LIBRARY_BUG', 'DATABASE_LOCK', 'CACHE_MISS'],
+                subTypes: ['SERVICE_DOWN', 'API_TIMEOUT', 'LIBRARY_BUG', 'DATABASE_LOCK', 'CACHE_MISS', 'DATABASE_ISSUE'],
                 detectionMethods: ['dependency_graph', 'health_check', 'version_verify']
             },
             SECURITY_INCIDENT: {
@@ -110,6 +110,8 @@ class RootCauseEngine {
     initializeSymptomDB() {
         const symptoms = [
             { symptom: 'high_cpu_usage', causes: ['CPU_SPIKE', 'INFINITE_LOOP', 'DDOS'], confidence: 0.85 },
+            { symptom: 'disk_full', causes: ['DISK_FULL', 'HARDWARE_DEGRADATION'], confidence: 0.90 },
+            { symptom: 'database_issue', causes: ['DATABASE_ISSUE', 'SERVICE_DOWN'], confidence: 0.88 },
             { symptom: 'memory_leak', causes: ['MEMORY_LEAK', 'MEMORY_CORRUPTION', 'LIBRARY_BUG'], confidence: 0.92 },
             { symptom: 'slow_response', causes: ['LATENCY_SPIKE', 'DATABASE_LOCK', 'CACHE_MISS'], confidence: 0.78 },
             { symptom: 'connection_refused', causes: ['SERVICE_DOWN', 'FIREWALL_BLOCK', 'DNS_FAILURE'], confidence: 0.88 },
@@ -453,42 +455,133 @@ class RootCauseEngine {
     identifyRootCause(techniqueResults) {
         const causeVotes = new Map();
 
-        // Collect votes from each technique
+        // ============================================
+        // COLLECT MEANINGFUL ROOT-CAUSE VOTES
+        // ============================================
+
+        // FIVE_WHYS
         if (techniqueResults.FIVE_WHYS?.rootCauseFound) {
-            const cause = techniqueResults.FIVE_WHYS.questions[4]?.answer.replace('Due to ', '').replace('Root cause identified', '');
-            causeVotes.set('FIVE_WHYS', cause || 'UNKNOWN');
-        }
+            const answer =
+                techniqueResults.FIVE_WHYS.questions?.[4]?.answer || '';
 
-        if (techniqueResults.FISHBONE?.primaryCategory) {
-            causeVotes.set('FISHBONE', techniqueResults.FISHBONE.primaryCategory);
-        }
+            const cause = answer
+                .replace(/^Due to\\s*/i, '')
+                .replace(/Root cause identified/gi, '')
+                .trim();
 
-        if (techniqueResults.FAULT_TREE?.tree?.root) {
-            causeVotes.set('FAULT_TREE', techniqueResults.FAULT_TREE.tree.root);
-        }
-
-        if (techniqueResults.BAYESIAN_NETWORK?.mostLikelyCause) {
-            causeVotes.set('BAYESIAN', techniqueResults.BAYESIAN_NETWORK.mostLikelyCause);
-        }
-
-        // Determine primary root cause
-        const primaryCause = Array.from(causeVotes.values())[0] || 'UNKNOWN';
-        
-        // Find category
-        let category = 'UNKNOWN';
-        for (let [catName, catData] of Object.entries(this.categories)) {
-            if (catData.subTypes.some(subType => primaryCause.includes(subType))) {
-                category = catName;
-                break;
+            if (
+                cause &&
+                cause.toUpperCase() !== 'UNKNOWN' &&
+                cause.toLowerCase() !== 'system interaction'
+            ) {
+                causeVotes.set('FIVE_WHYS', cause);
             }
+        }
+
+        // FISHBONE is a category classification, not a concrete cause.
+        // Therefore it is intentionally NOT counted as a root-cause vote.
+
+        // FAULT TREE
+        if (techniqueResults.FAULT_TREE?.tree?.root) {
+            const cause = String(
+                techniqueResults.FAULT_TREE.tree.root
+            ).trim();
+
+            if (
+                cause &&
+                cause.toUpperCase() !== 'UNKNOWN'
+            ) {
+                causeVotes.set('FAULT_TREE', cause);
+            }
+        }
+
+        // BAYESIAN NETWORK
+        if (techniqueResults.BAYESIAN_NETWORK?.mostLikelyCause) {
+            const cause = String(
+                techniqueResults.BAYESIAN_NETWORK.mostLikelyCause
+            ).trim();
+
+            if (
+                cause &&
+                cause.toUpperCase() !== 'UNKNOWN'
+            ) {
+                causeVotes.set('BAYESIAN', cause);
+            }
+        }
+
+        // ============================================
+        // COUNT AGREEMENT
+        // ============================================
+
+        const counts = new Map();
+
+        for (const cause of causeVotes.values()) {
+            const normalized = String(cause).trim().toUpperCase();
+
+            if (!normalized || normalized === 'UNKNOWN') {
+                continue;
+            }
+
+            counts.set(
+                normalized,
+                (counts.get(normalized) || 0) + 1
+            );
+        }
+
+        // ============================================
+        // SELECT PRIMARY CAUSE
+        // ============================================
+
+        let primaryCause = 'UNKNOWN';
+        let highestCount = 0;
+
+        for (const [cause, count] of counts.entries()) {
+            if (count > highestCount) {
+                highestCount = count;
+                primaryCause = cause;
+            }
+        }
+
+        // ============================================
+        // FIND CATEGORY
+        // ============================================
+
+        let category = 'UNKNOWN';
+
+        if (primaryCause !== 'UNKNOWN') {
+            for (const [catName, catData] of Object.entries(this.categories)) {
+                if (
+                    Array.isArray(catData.subTypes) &&
+                    catData.subTypes.some((subType) =>
+                        primaryCause.includes(String(subType).toUpperCase())
+                    )
+                ) {
+                    category = catName;
+                    break;
+                }
+            }
+        }
+
+        // ============================================
+        // CONSENSUS
+        // ============================================
+
+        const meaningfulVotes = counts.size;
+
+        let consensus = 'WEAK';
+
+        if (highestCount >= 2 && meaningfulVotes >= 1) {
+            consensus = 'STRONG';
+        } else if (meaningfulVotes >= 1) {
+            consensus = 'MODERATE';
         }
 
         return {
             primary: primaryCause,
             category,
             votes: Object.fromEntries(causeVotes),
-            consensus: causeVotes.size >= 3 ? 'STRONG' : causeVotes.size >= 2 ? 'MODERATE' : 'WEAK',
-            allPossibleCauses: Array.from(new Set(Object.values(causeVotes)))
+            consensus,
+            allPossibleCauses: Array.from(counts.keys())
         };
     }
 

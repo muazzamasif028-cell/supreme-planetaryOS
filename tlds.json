@@ -1,0 +1,2217 @@
+{
+  "categories": {
+    "country": {
+      "name": "Country & Territory TLDs",
+      "tlds": [
+        {
+          "tld": "af",
+          "name": ".af — Afghanistan",
+          "country": "Afghanistan",
+          "countryCode": "AF",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "al",
+          "name": ".al — Albania",
+          "country": "Albania",
+          "countryCode": "AL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "dz",
+          "name": ".dz — Algeria",
+          "country": "Algeria",
+          "countryCode": "DZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ad",
+          "name": ".ad — Andorra",
+          "country": "Andorra",
+          "countryCode": "AD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ao",
+          "name": ".ao — Angola",
+          "country": "Angola",
+          "countryCode": "AO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ag",
+          "name": ".ag — Antigua and Barbuda",
+          "country": "Antigua and Barbuda",
+          "countryCode": "AG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ar",
+          "name": ".ar — Argentina",
+          "country": "Argentina",
+          "countryCode": "AR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "am",
+          "name": ".am — Armenia",
+          "country": "Armenia",
+          "countryCode": "AM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "au",
+          "name": ".au — Australia",
+          "country": "Australia",
+          "countryCode": "AU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "at",
+          "name": ".at — Austria",
+          "country": "Austria",
+          "countryCode": "AT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "az",
+          "name": ".az — Azerbaijan",
+          "country": "Azerbaijan",
+          "countryCode": "AZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bs",
+          "name": ".bs — Bahamas",
+          "country": "Bahamas",
+          "countryCode": "BS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bh",
+          "name": ".bh — Bahrain",
+          "country": "Bahrain",
+          "countryCode": "BH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bd",
+          "name": ".bd — Bangladesh",
+          "country": "Bangladesh",
+          "countryCode": "BD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bb",
+          "name": ".bb — Barbados",
+          "country": "Barbados",
+          "countryCode": "BB",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "by",
+          "name": ".by — Belarus",
+          "country": "Belarus",
+          "countryCode": "BY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "be",
+          "name": ".be — Belgium",
+          "country": "Belgium",
+          "countryCode": "BE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bz",
+          "name": ".bz — Belize",
+          "country": "Belize",
+          "countryCode": "BZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bj",
+          "name": ".bj — Benin",
+          "country": "Benin",
+          "countryCode": "BJ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bt",
+          "name": ".bt — Bhutan",
+          "country": "Bhutan",
+          "countryCode": "BT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bo",
+          "name": ".bo — Bolivia",
+          "country": "Bolivia",
+          "countryCode": "BO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ba",
+          "name": ".ba — Bosnia and Herzegovina",
+          "country": "Bosnia and Herzegovina",
+          "countryCode": "BA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bw",
+          "name": ".bw — Botswana",
+          "country": "Botswana",
+          "countryCode": "BW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "br",
+          "name": ".br — Brazil",
+          "country": "Brazil",
+          "countryCode": "BR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bn",
+          "name": ".bn — Brunei",
+          "country": "Brunei",
+          "countryCode": "BN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bg",
+          "name": ".bg — Bulgaria",
+          "country": "Bulgaria",
+          "countryCode": "BG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bf",
+          "name": ".bf — Burkina Faso",
+          "country": "Burkina Faso",
+          "countryCode": "BF",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "bi",
+          "name": ".bi — Burundi",
+          "country": "Burundi",
+          "countryCode": "BI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kh",
+          "name": ".kh — Cambodia",
+          "country": "Cambodia",
+          "countryCode": "KH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cm",
+          "name": ".cm — Cameroon",
+          "country": "Cameroon",
+          "countryCode": "CM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ca",
+          "name": ".ca — Canada",
+          "country": "Canada",
+          "countryCode": "CA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cv",
+          "name": ".cv — Cape Verde",
+          "country": "Cape Verde",
+          "countryCode": "CV",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cf",
+          "name": ".cf — Central African Republic",
+          "country": "Central African Republic",
+          "countryCode": "CF",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "td",
+          "name": ".td — Chad",
+          "country": "Chad",
+          "countryCode": "TD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cl",
+          "name": ".cl — Chile",
+          "country": "Chile",
+          "countryCode": "CL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cn",
+          "name": ".cn — China",
+          "country": "China",
+          "countryCode": "CN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "co",
+          "name": ".co — Colombia",
+          "country": "Colombia",
+          "countryCode": "CO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "km",
+          "name": ".km — Comoros",
+          "country": "Comoros",
+          "countryCode": "KM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cg",
+          "name": ".cg — Republic of the Congo",
+          "country": "Republic of the Congo",
+          "countryCode": "CG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cd",
+          "name": ".cd — Democratic Republic of the Congo",
+          "country": "Democratic Republic of the Congo",
+          "countryCode": "CD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cr",
+          "name": ".cr — Costa Rica",
+          "country": "Costa Rica",
+          "countryCode": "CR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ci",
+          "name": ".ci — Côte d’Ivoire",
+          "country": "Côte d’Ivoire",
+          "countryCode": "CI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "hr",
+          "name": ".hr — Croatia",
+          "country": "Croatia",
+          "countryCode": "HR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cu",
+          "name": ".cu — Cuba",
+          "country": "Cuba",
+          "countryCode": "CU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cy",
+          "name": ".cy — Cyprus",
+          "country": "Cyprus",
+          "countryCode": "CY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cz",
+          "name": ".cz — Czechia",
+          "country": "Czechia",
+          "countryCode": "CZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "dk",
+          "name": ".dk — Denmark",
+          "country": "Denmark",
+          "countryCode": "DK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "dj",
+          "name": ".dj — Djibouti",
+          "country": "Djibouti",
+          "countryCode": "DJ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "dm",
+          "name": ".dm — Dominica",
+          "country": "Dominica",
+          "countryCode": "DM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "do",
+          "name": ".do — Dominican Republic",
+          "country": "Dominican Republic",
+          "countryCode": "DO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ec",
+          "name": ".ec — Ecuador",
+          "country": "Ecuador",
+          "countryCode": "EC",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "eg",
+          "name": ".eg — Egypt",
+          "country": "Egypt",
+          "countryCode": "EG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sv",
+          "name": ".sv — El Salvador",
+          "country": "El Salvador",
+          "countryCode": "SV",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gq",
+          "name": ".gq — Equatorial Guinea",
+          "country": "Equatorial Guinea",
+          "countryCode": "GQ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "er",
+          "name": ".er — Eritrea",
+          "country": "Eritrea",
+          "countryCode": "ER",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ee",
+          "name": ".ee — Estonia",
+          "country": "Estonia",
+          "countryCode": "EE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sz",
+          "name": ".sz — Eswatini",
+          "country": "Eswatini",
+          "countryCode": "SZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "et",
+          "name": ".et — Ethiopia",
+          "country": "Ethiopia",
+          "countryCode": "ET",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "fj",
+          "name": ".fj — Fiji",
+          "country": "Fiji",
+          "countryCode": "FJ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "fi",
+          "name": ".fi — Finland",
+          "country": "Finland",
+          "countryCode": "FI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "fr",
+          "name": ".fr — France",
+          "country": "France",
+          "countryCode": "FR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ga",
+          "name": ".ga — Gabon",
+          "country": "Gabon",
+          "countryCode": "GA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gm",
+          "name": ".gm — Gambia",
+          "country": "Gambia",
+          "countryCode": "GM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ge",
+          "name": ".ge — Georgia",
+          "country": "Georgia",
+          "countryCode": "GE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "de",
+          "name": ".de — Germany",
+          "country": "Germany",
+          "countryCode": "DE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gh",
+          "name": ".gh — Ghana",
+          "country": "Ghana",
+          "countryCode": "GH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gr",
+          "name": ".gr — Greece",
+          "country": "Greece",
+          "countryCode": "GR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gd",
+          "name": ".gd — Grenada",
+          "country": "Grenada",
+          "countryCode": "GD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gt",
+          "name": ".gt — Guatemala",
+          "country": "Guatemala",
+          "countryCode": "GT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gn",
+          "name": ".gn — Guinea",
+          "country": "Guinea",
+          "countryCode": "GN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gw",
+          "name": ".gw — Guinea-Bissau",
+          "country": "Guinea-Bissau",
+          "countryCode": "GW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "gy",
+          "name": ".gy — Guyana",
+          "country": "Guyana",
+          "countryCode": "GY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ht",
+          "name": ".ht — Haiti",
+          "country": "Haiti",
+          "countryCode": "HT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "hn",
+          "name": ".hn — Honduras",
+          "country": "Honduras",
+          "countryCode": "HN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "hu",
+          "name": ".hu — Hungary",
+          "country": "Hungary",
+          "countryCode": "HU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "is",
+          "name": ".is — Iceland",
+          "country": "Iceland",
+          "countryCode": "IS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "in",
+          "name": ".in — India",
+          "country": "India",
+          "countryCode": "IN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "id",
+          "name": ".id — Indonesia",
+          "country": "Indonesia",
+          "countryCode": "ID",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ir",
+          "name": ".ir — Iran",
+          "country": "Iran",
+          "countryCode": "IR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "iq",
+          "name": ".iq — Iraq",
+          "country": "Iraq",
+          "countryCode": "IQ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ie",
+          "name": ".ie — Ireland",
+          "country": "Ireland",
+          "countryCode": "IE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "il",
+          "name": ".il — Israel",
+          "country": "Israel",
+          "countryCode": "IL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "it",
+          "name": ".it — Italy",
+          "country": "Italy",
+          "countryCode": "IT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "jm",
+          "name": ".jm — Jamaica",
+          "country": "Jamaica",
+          "countryCode": "JM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "jp",
+          "name": ".jp — Japan",
+          "country": "Japan",
+          "countryCode": "JP",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "jo",
+          "name": ".jo — Jordan",
+          "country": "Jordan",
+          "countryCode": "JO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kz",
+          "name": ".kz — Kazakhstan",
+          "country": "Kazakhstan",
+          "countryCode": "KZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ke",
+          "name": ".ke — Kenya",
+          "country": "Kenya",
+          "countryCode": "KE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ki",
+          "name": ".ki — Kiribati",
+          "country": "Kiribati",
+          "countryCode": "KI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kp",
+          "name": ".kp — North Korea",
+          "country": "North Korea",
+          "countryCode": "KP",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kr",
+          "name": ".kr — South Korea",
+          "country": "South Korea",
+          "countryCode": "KR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kw",
+          "name": ".kw — Kuwait",
+          "country": "Kuwait",
+          "countryCode": "KW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kg",
+          "name": ".kg — Kyrgyzstan",
+          "country": "Kyrgyzstan",
+          "countryCode": "KG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "la",
+          "name": ".la — Laos",
+          "country": "Laos",
+          "countryCode": "LA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lv",
+          "name": ".lv — Latvia",
+          "country": "Latvia",
+          "countryCode": "LV",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lb",
+          "name": ".lb — Lebanon",
+          "country": "Lebanon",
+          "countryCode": "LB",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ls",
+          "name": ".ls — Lesotho",
+          "country": "Lesotho",
+          "countryCode": "LS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lr",
+          "name": ".lr — Liberia",
+          "country": "Liberia",
+          "countryCode": "LR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ly",
+          "name": ".ly — Libya",
+          "country": "Libya",
+          "countryCode": "LY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "li",
+          "name": ".li — Liechtenstein",
+          "country": "Liechtenstein",
+          "countryCode": "LI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lt",
+          "name": ".lt — Lithuania",
+          "country": "Lithuania",
+          "countryCode": "LT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lu",
+          "name": ".lu — Luxembourg",
+          "country": "Luxembourg",
+          "countryCode": "LU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mg",
+          "name": ".mg — Madagascar",
+          "country": "Madagascar",
+          "countryCode": "MG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mw",
+          "name": ".mw — Malawi",
+          "country": "Malawi",
+          "countryCode": "MW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "my",
+          "name": ".my — Malaysia",
+          "country": "Malaysia",
+          "countryCode": "MY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mv",
+          "name": ".mv — Maldives",
+          "country": "Maldives",
+          "countryCode": "MV",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ml",
+          "name": ".ml — Mali",
+          "country": "Mali",
+          "countryCode": "ML",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mt",
+          "name": ".mt — Malta",
+          "country": "Malta",
+          "countryCode": "MT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mh",
+          "name": ".mh — Marshall Islands",
+          "country": "Marshall Islands",
+          "countryCode": "MH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mr",
+          "name": ".mr — Mauritania",
+          "country": "Mauritania",
+          "countryCode": "MR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mu",
+          "name": ".mu — Mauritius",
+          "country": "Mauritius",
+          "countryCode": "MU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mx",
+          "name": ".mx — Mexico",
+          "country": "Mexico",
+          "countryCode": "MX",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "fm",
+          "name": ".fm — Micronesia",
+          "country": "Micronesia",
+          "countryCode": "FM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "md",
+          "name": ".md — Moldova",
+          "country": "Moldova",
+          "countryCode": "MD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mc",
+          "name": ".mc — Monaco",
+          "country": "Monaco",
+          "countryCode": "MC",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mn",
+          "name": ".mn — Mongolia",
+          "country": "Mongolia",
+          "countryCode": "MN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "me",
+          "name": ".me — Montenegro",
+          "country": "Montenegro",
+          "countryCode": "ME",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ma",
+          "name": ".ma — Morocco",
+          "country": "Morocco",
+          "countryCode": "MA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mz",
+          "name": ".mz — Mozambique",
+          "country": "Mozambique",
+          "countryCode": "MZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mm",
+          "name": ".mm — Myanmar",
+          "country": "Myanmar",
+          "countryCode": "MM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "na",
+          "name": ".na — Namibia",
+          "country": "Namibia",
+          "countryCode": "NA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "nr",
+          "name": ".nr — Nauru",
+          "country": "Nauru",
+          "countryCode": "NR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "np",
+          "name": ".np — Nepal",
+          "country": "Nepal",
+          "countryCode": "NP",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "nl",
+          "name": ".nl — Netherlands",
+          "country": "Netherlands",
+          "countryCode": "NL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "nz",
+          "name": ".nz — New Zealand",
+          "country": "New Zealand",
+          "countryCode": "NZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ni",
+          "name": ".ni — Nicaragua",
+          "country": "Nicaragua",
+          "countryCode": "NI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ne",
+          "name": ".ne — Niger",
+          "country": "Niger",
+          "countryCode": "NE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ng",
+          "name": ".ng — Nigeria",
+          "country": "Nigeria",
+          "countryCode": "NG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "mk",
+          "name": ".mk — North Macedonia",
+          "country": "North Macedonia",
+          "countryCode": "MK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "no",
+          "name": ".no — Norway",
+          "country": "Norway",
+          "countryCode": "NO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "om",
+          "name": ".om — Oman",
+          "country": "Oman",
+          "countryCode": "OM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pk",
+          "name": ".pk — Pakistan",
+          "country": "Pakistan",
+          "countryCode": "PK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "com.pk",
+          "name": ".com.pk — Pakistan",
+          "country": "Pakistan",
+          "countryCode": "PK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "net.pk",
+          "name": ".net.pk — Pakistan",
+          "country": "Pakistan",
+          "countryCode": "PK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "org.pk",
+          "name": ".org.pk — Pakistan",
+          "country": "Pakistan",
+          "countryCode": "PK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pw",
+          "name": ".pw — Palau",
+          "country": "Palau",
+          "countryCode": "PW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ps",
+          "name": ".ps — Palestine",
+          "country": "Palestine",
+          "countryCode": "PS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pa",
+          "name": ".pa — Panama",
+          "country": "Panama",
+          "countryCode": "PA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pg",
+          "name": ".pg — Papua New Guinea",
+          "country": "Papua New Guinea",
+          "countryCode": "PG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "py",
+          "name": ".py — Paraguay",
+          "country": "Paraguay",
+          "countryCode": "PY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pe",
+          "name": ".pe — Peru",
+          "country": "Peru",
+          "countryCode": "PE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ph",
+          "name": ".ph — Philippines",
+          "country": "Philippines",
+          "countryCode": "PH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pl",
+          "name": ".pl — Poland",
+          "country": "Poland",
+          "countryCode": "PL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pt",
+          "name": ".pt — Portugal",
+          "country": "Portugal",
+          "countryCode": "PT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "qa",
+          "name": ".qa — Qatar",
+          "country": "Qatar",
+          "countryCode": "QA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ro",
+          "name": ".ro — Romania",
+          "country": "Romania",
+          "countryCode": "RO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ru",
+          "name": ".ru — Russia",
+          "country": "Russia",
+          "countryCode": "RU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "рф",
+          "name": ".рф — Russia",
+          "country": "Russia",
+          "countryCode": "RU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "rw",
+          "name": ".rw — Rwanda",
+          "country": "Rwanda",
+          "countryCode": "RW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "kn",
+          "name": ".kn — Saint Kitts and Nevis",
+          "country": "Saint Kitts and Nevis",
+          "countryCode": "KN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lc",
+          "name": ".lc — Saint Lucia",
+          "country": "Saint Lucia",
+          "countryCode": "LC",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "vc",
+          "name": ".vc — Saint Vincent and the Grenadines",
+          "country": "Saint Vincent and the Grenadines",
+          "countryCode": "VC",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ws",
+          "name": ".ws — Samoa",
+          "country": "Samoa",
+          "countryCode": "WS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sm",
+          "name": ".sm — San Marino",
+          "country": "San Marino",
+          "countryCode": "SM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "st",
+          "name": ".st — São Tomé and Príncipe",
+          "country": "São Tomé and Príncipe",
+          "countryCode": "ST",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sa",
+          "name": ".sa — Saudi Arabia",
+          "country": "Saudi Arabia",
+          "countryCode": "SA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sn",
+          "name": ".sn — Senegal",
+          "country": "Senegal",
+          "countryCode": "SN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "rs",
+          "name": ".rs — Serbia",
+          "country": "Serbia",
+          "countryCode": "RS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sc",
+          "name": ".sc — Seychelles",
+          "country": "Seychelles",
+          "countryCode": "SC",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sl",
+          "name": ".sl — Sierra Leone",
+          "country": "Sierra Leone",
+          "countryCode": "SL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sg",
+          "name": ".sg — Singapore",
+          "country": "Singapore",
+          "countryCode": "SG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sk",
+          "name": ".sk — Slovakia",
+          "country": "Slovakia",
+          "countryCode": "SK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "si",
+          "name": ".si — Slovenia",
+          "country": "Slovenia",
+          "countryCode": "SI",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sb",
+          "name": ".sb — Solomon Islands",
+          "country": "Solomon Islands",
+          "countryCode": "SB",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "so",
+          "name": ".so — Somalia",
+          "country": "Somalia",
+          "countryCode": "SO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "za",
+          "name": ".za — South Africa",
+          "country": "South Africa",
+          "countryCode": "ZA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ss",
+          "name": ".ss — South Sudan",
+          "country": "South Sudan",
+          "countryCode": "SS",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "es",
+          "name": ".es — Spain",
+          "country": "Spain",
+          "countryCode": "ES",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "lk",
+          "name": ".lk — Sri Lanka",
+          "country": "Sri Lanka",
+          "countryCode": "LK",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sd",
+          "name": ".sd — Sudan",
+          "country": "Sudan",
+          "countryCode": "SD",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sr",
+          "name": ".sr — Suriname",
+          "country": "Suriname",
+          "countryCode": "SR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "se",
+          "name": ".se — Sweden",
+          "country": "Sweden",
+          "countryCode": "SE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ch",
+          "name": ".ch — Switzerland",
+          "country": "Switzerland",
+          "countryCode": "CH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "sy",
+          "name": ".sy — Syria",
+          "country": "Syria",
+          "countryCode": "SY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tw",
+          "name": ".tw — Taiwan",
+          "country": "Taiwan",
+          "countryCode": "TW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tj",
+          "name": ".tj — Tajikistan",
+          "country": "Tajikistan",
+          "countryCode": "TJ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tz",
+          "name": ".tz — Tanzania",
+          "country": "Tanzania",
+          "countryCode": "TZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "th",
+          "name": ".th — Thailand",
+          "country": "Thailand",
+          "countryCode": "TH",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tl",
+          "name": ".tl — Timor-Leste",
+          "country": "Timor-Leste",
+          "countryCode": "TL",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tg",
+          "name": ".tg — Togo",
+          "country": "Togo",
+          "countryCode": "TG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "to",
+          "name": ".to — Tonga",
+          "country": "Tonga",
+          "countryCode": "TO",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tt",
+          "name": ".tt — Trinidad and Tobago",
+          "country": "Trinidad and Tobago",
+          "countryCode": "TT",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tn",
+          "name": ".tn — Tunisia",
+          "country": "Tunisia",
+          "countryCode": "TN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tr",
+          "name": ".tr — Turkey",
+          "country": "Turkey",
+          "countryCode": "TR",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tm",
+          "name": ".tm — Turkmenistan",
+          "country": "Turkmenistan",
+          "countryCode": "TM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tv",
+          "name": ".tv — Tuvalu",
+          "country": "Tuvalu",
+          "countryCode": "TV",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ug",
+          "name": ".ug — Uganda",
+          "country": "Uganda",
+          "countryCode": "UG",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ua",
+          "name": ".ua — Ukraine",
+          "country": "Ukraine",
+          "countryCode": "UA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ae",
+          "name": ".ae — United Arab Emirates",
+          "country": "United Arab Emirates",
+          "countryCode": "AE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "uk",
+          "name": ".uk — United Kingdom",
+          "country": "United Kingdom",
+          "countryCode": "GB",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "co.uk",
+          "name": ".co.uk — United Kingdom",
+          "country": "United Kingdom",
+          "countryCode": "GB",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "org.uk",
+          "name": ".org.uk — United Kingdom",
+          "country": "United Kingdom",
+          "countryCode": "GB",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "us",
+          "name": ".us — United States",
+          "country": "United States",
+          "countryCode": "US",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "uy",
+          "name": ".uy — Uruguay",
+          "country": "Uruguay",
+          "countryCode": "UY",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "uz",
+          "name": ".uz — Uzbekistan",
+          "country": "Uzbekistan",
+          "countryCode": "UZ",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "vu",
+          "name": ".vu — Vanuatu",
+          "country": "Vanuatu",
+          "countryCode": "VU",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "va",
+          "name": ".va — Vatican City",
+          "country": "Vatican City",
+          "countryCode": "VA",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ve",
+          "name": ".ve — Venezuela",
+          "country": "Venezuela",
+          "countryCode": "VE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "vn",
+          "name": ".vn — Vietnam",
+          "country": "Vietnam",
+          "countryCode": "VN",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ye",
+          "name": ".ye — Yemen",
+          "country": "Yemen",
+          "countryCode": "YE",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "zm",
+          "name": ".zm — Zambia",
+          "country": "Zambia",
+          "countryCode": "ZM",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "zw",
+          "name": ".zw — Zimbabwe",
+          "country": "Zimbabwe",
+          "countryCode": "ZW",
+          "category": "country",
+          "premium": false,
+          "quantumEligible": false
+        }
+      ]
+    },
+    "generic": {
+      "name": "Generic TLDs",
+      "tlds": [
+        {
+          "tld": "com",
+          "name": ".com domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "net",
+          "name": ".net domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "org",
+          "name": ".org domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "info",
+          "name": ".info domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "biz",
+          "name": ".biz domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "name",
+          "name": ".name domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "pro",
+          "name": ".pro domain",
+          "category": "generic",
+          "premium": true,
+          "quantumEligible": false
+        },
+        {
+          "tld": "io",
+          "name": ".io domain",
+          "category": "generic",
+          "premium": true,
+          "quantumEligible": false
+        },
+        {
+          "tld": "ai",
+          "name": ".ai domain",
+          "category": "generic",
+          "premium": true,
+          "quantumEligible": false
+        },
+        {
+          "tld": "app",
+          "name": ".app domain",
+          "category": "generic",
+          "premium": true,
+          "quantumEligible": false
+        },
+        {
+          "tld": "dev",
+          "name": ".dev domain",
+          "category": "generic",
+          "premium": true,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cloud",
+          "name": ".cloud domain",
+          "category": "generic",
+          "premium": true,
+          "quantumEligible": false
+        },
+        {
+          "tld": "tech",
+          "name": ".tech domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "online",
+          "name": ".online domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "site",
+          "name": ".site domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "store",
+          "name": ".store domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "shop",
+          "name": ".shop domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "agency",
+          "name": ".agency domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "digital",
+          "name": ".digital domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "media",
+          "name": ".media domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "website",
+          "name": ".website domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "solutions",
+          "name": ".solutions domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "software",
+          "name": ".software domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "company",
+          "name": ".company domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "systems",
+          "name": ".systems domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "network",
+          "name": ".network domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "services",
+          "name": ".services domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "email",
+          "name": ".email domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "live",
+          "name": ".live domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "space",
+          "name": ".space domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "world",
+          "name": ".world domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "today",
+          "name": ".today domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "xyz",
+          "name": ".xyz domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "club",
+          "name": ".club domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "social",
+          "name": ".social domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "one",
+          "name": ".one domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "life",
+          "name": ".life domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "work",
+          "name": ".work domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "business",
+          "name": ".business domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "marketing",
+          "name": ".marketing domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "academy",
+          "name": ".academy domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "education",
+          "name": ".education domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "school",
+          "name": ".school domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "design",
+          "name": ".design domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "studio",
+          "name": ".studio domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "art",
+          "name": ".art domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "blog",
+          "name": ".blog domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "news",
+          "name": ".news domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "travel",
+          "name": ".travel domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "coffee",
+          "name": ".coffee domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "cafe",
+          "name": ".cafe domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "games",
+          "name": ".games domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "music",
+          "name": ".music domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "video",
+          "name": ".video domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        },
+        {
+          "tld": "photography",
+          "name": ".photography domain",
+          "category": "generic",
+          "premium": false,
+          "quantumEligible": false
+        }
+      ]
+    }
+  }
+}

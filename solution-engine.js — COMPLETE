@@ -132,10 +132,61 @@ class SolutionEngine {
         }
     }
 
-    matchSolutions(rootCause) {
-        const category = rootCause.category?.toUpperCase().replace(' ', '_');
-        const solutions = this.solutionDB[category] || this.genericSolutions;
-        return [...solutions];
+    matchSolutions(rootCause = {}) {
+        const primary = String(rootCause.primary || '')
+            .trim()
+            .toUpperCase()
+            .replace(/\\s+/g, '_');
+
+        const category = String(rootCause.category || '')
+            .trim()
+            .toUpperCase()
+            .replace(/\\s+/g, '_');
+
+        // Map concrete root causes to the existing
+        // Solution Engine solution categories.
+        const rootCauseToSolutionCategory = {
+            CPU_SPIKE: 'CPU_THROTTLING',
+            INFINITE_LOOP: 'CPU_THROTTLING',
+
+            MEMORY_LEAK: 'MEMORY_LEAK',
+
+            SERVICE_DOWN: 'NETWORK_FAILURE',
+            DNS_FAILURE: 'NETWORK_FAILURE',
+            API_TIMEOUT: 'NETWORK_FAILURE',
+            FIREWALL_BLOCK: 'NETWORK_FAILURE',
+
+            DDOS: 'SECURITY_INCIDENT',
+            UNAUTHORIZED_ACCESS: 'SECURITY_INCIDENT',
+            INJECTION_ATTACK: 'SECURITY_INCIDENT',
+            DATA_BREACH: 'SECURITY_INCIDENT',
+
+            DATABASE_ISSUE: 'DATABASE_ISSUE'
+        };
+
+        const solutionCategory =
+            rootCauseToSolutionCategory[primary] || category;
+
+        const solutionGroup = this.solutionDB[solutionCategory];
+
+        // solutionDB categories store their solutions inside
+        // a "solutions" array.
+        if (
+            solutionGroup &&
+            Array.isArray(solutionGroup.solutions)
+        ) {
+            return [...solutionGroup.solutions];
+        }
+
+        // Support a direct array if a future category uses one.
+        if (Array.isArray(solutionGroup)) {
+            return [...solutionGroup];
+        }
+
+        // Safe generic fallback.
+        return Array.isArray(this.genericSolutions)
+            ? [...this.genericSolutions]
+            : [];
     }
 
     rankSolutions(solutions, context) {
